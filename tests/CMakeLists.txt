@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.14)
 
 project(sos_tests CXX)
 message(STATUS "Generating sos tests")
@@ -11,13 +11,18 @@ if(NOT TARGET sos)
 endif()
 
 
-file(GLOB SOS_TEST_SOURCES CONFIGURE_DEPENDS "*.cpp")
+file(GLOB SOS_TEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     get_filename_component(SOS_TEST ${SOS_TEST_SOURCE} NAME_WLE)
 
     add_executable(${SOS_TEST} ${SOS_TEST_SOURCE})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
+
+    target_include_directories(
+        ${SOS_TEST} PRIVATE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    )
 
     # Enable warnings
     if(MSVC)
