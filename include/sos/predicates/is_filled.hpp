@@ -4,7 +4,6 @@
 
 #include <sos/traits/transparent.hpp>
 #include <sos/predicates/is_empty.hpp>
-#include <sos/concepts/empty_testable.hpp>
 
 
 namespace sos {

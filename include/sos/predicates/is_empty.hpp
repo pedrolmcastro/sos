@@ -6,10 +6,20 @@
 #include <utility>
 
 #include <sos/traits/transparent.hpp>
-#include <sos/concepts/empty_testable.hpp>
 
 
 namespace sos {
+    template<class Tested>
+    concept empty_testable = requires(Tested&& tested) {
+        std::ranges::empty(std::forward<Tested>(tested));
+    };
+
+    template<class Tested>
+    concept nothrow_empty_testable = empty_testable<Tested> and requires(Tested&& tested) {
+        { std::ranges::empty(std::forward<Tested>(tested)) } noexcept;
+    };
+
+
     struct is_empty_t final : transparent {
         template<empty_testable Tested>
             [[nodiscard]] constexpr bool operator()(Tested&& tested) const

@@ -7,13 +7,6 @@
 #endif
 
 
-#include <sos/concepts/null.hpp>
-#include <sos/concepts/bool_castable.hpp>
-#include <sos/concepts/empty_testable.hpp>
-#include <sos/concepts/has_value_testable.hpp>
-#include <sos/concepts/oneway_equality_comparable_with_null.hpp>
-#include <sos/concepts/oneway_inequality_comparable_with_null.hpp>
-
 #include <sos/predicates/is_empty.hpp>
 #include <sos/predicates/bool_cast.hpp>
 #include <sos/predicates/has_value.hpp>
