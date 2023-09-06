@@ -57,8 +57,8 @@ namespace sos {
         }
     };
 
-    constexpr is_null<std::nullptr_t> is_nullptr{};
-    constexpr is_null<std::nullopt_t> is_nullopt{};
+    inline constexpr is_null<std::nullptr_t> is_nullptr{};
+    inline constexpr is_null<std::nullopt_t> is_nullopt{};
 }
 
 
