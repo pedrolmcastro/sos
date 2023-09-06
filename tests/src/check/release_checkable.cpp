@@ -1,9 +1,9 @@
 #include <cstddef>
 
 #include <sos/check/policy.hpp>
+#include <sos/predicates/is_null.hpp>
 #include <sos/predicates/is_empty.hpp>
 #include <sos/predicates/has_value.hpp>
-#include <sos/predicates/is_equal_to_null.hpp>
 
 #define NDEBUG 1 // Force release mode
 #include <sos/check/checkable.hpp>
@@ -50,8 +50,8 @@ static constexpr void test_nothrow_checkable() noexcept {
     static_assert(    sos::nothrow_checkable<sos::asserts_t, nothrow_valued_container, sos::has_value_t>);
 
     static_assert(    sos::nothrow_checkable<sos::unenforced_t, comparable_with<std::nullptr_t>>);
-    static_assert(    sos::nothrow_checkable<sos::unenforced_t, comparable_with<std::nullptr_t>, sos::is_equal_to_null<std::nullptr_t>>);
-    static_assert(    sos::nothrow_checkable<sos::unenforced_t, nothrow_comparable_with<std::nullptr_t>, sos::is_equal_to_null<std::nullptr_t>>);
+    static_assert(    sos::nothrow_checkable<sos::unenforced_t, comparable_with<std::nullptr_t>, sos::is_null<std::nullptr_t>>);
+    static_assert(    sos::nothrow_checkable<sos::unenforced_t, nothrow_comparable_with<std::nullptr_t>, sos::is_null<std::nullptr_t>>);
 }
 
 

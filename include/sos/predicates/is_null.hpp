@@ -1,5 +1,5 @@
-#ifndef SOS_PREDICATES_IS_EQUAL_TO_NULL_HPP
-#define SOS_PREDICATES_IS_EQUAL_TO_NULL_HPP
+#ifndef SOS_PREDICATES_IS_NULL_HPP
+#define SOS_PREDICATES_IS_NULL_HPP
 
 
 #include <cstddef>
@@ -48,7 +48,7 @@ namespace sos {
     );
 
 
-    template<null Null> struct is_equal_to_null final : transparent {
+    template<null Null> struct is_null final : transparent {
         template<oneway_equality_comparable_with_null<Null> Compared>
             [[nodiscard]] constexpr bool operator()(Compared&& compared) const
             noexcept(nothrow_oneway_equality_comparable_with_null<Compared, Null>)
@@ -57,8 +57,8 @@ namespace sos {
         }
     };
 
-    constexpr is_equal_to_null<std::nullptr_t> is_equal_to_nullptr{};
-    constexpr is_equal_to_null<std::nullopt_t> is_equal_to_nullopt{};
+    constexpr is_null<std::nullptr_t> is_nullptr{};
+    constexpr is_null<std::nullopt_t> is_nullopt{};
 }
 
 
