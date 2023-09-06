@@ -7,8 +7,10 @@
 #endif
 
 
+#include <sos/check/check.hpp>
 #include <sos/check/policy.hpp>
 #include <sos/check/checkable.hpp>
+#include <sos/check/failed_check.hpp>
 
 #include <sos/predicates/is_null.hpp>
 #include <sos/predicates/is_empty.hpp>
