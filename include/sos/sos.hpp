@@ -7,6 +7,9 @@
 #endif
 
 
+#include <sos/check/policy.hpp>
+#include <sos/check/checkable.hpp>
+
 #include <sos/predicates/is_empty.hpp>
 #include <sos/predicates/bool_cast.hpp>
 #include <sos/predicates/has_value.hpp>
@@ -14,6 +17,7 @@
 #include <sos/predicates/is_equal_to_null.hpp>
 #include <sos/predicates/is_not_equal_to_null.hpp>
 
+#include <sos/traits/is_debug.hpp>
 #include <sos/traits/transparent.hpp>
 #include <sos/traits/null_instance.hpp>
 
