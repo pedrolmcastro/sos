@@ -9,7 +9,7 @@
 namespace sos {
     struct is_filled_t final : transparent {
         template<empty_testable Tested>
-            [[nodiscard]] constexpr bool operator()(Tested&& tested) const
+        [[nodiscard]] constexpr bool operator()(Tested&& tested) const
             noexcept(nothrow_empty_testable<Tested>)
         {
             return not is_empty(tested);

@@ -16,7 +16,7 @@
 
 namespace sos {
     template<policy Policy, class Checked, class Predicate = bool_cast_t>
-        constexpr void check(Policy, Checked&& checked, Predicate&& predicate = Predicate{})
+    constexpr void check(Policy, Checked&& checked, Predicate&& predicate = Predicate{})
         noexcept(nothrow_checkable<Policy, Checked, Predicate>)
         requires(checkable<Policy, Checked, Predicate>)
     {

@@ -50,7 +50,7 @@ namespace sos {
 
     template<null Null> struct is_not_null final : transparent {
         template<oneway_inequality_comparable_with_null<Null> Compared>
-            [[nodiscard]] constexpr bool operator()(Compared&& compared) const
+        [[nodiscard]] constexpr bool operator()(Compared&& compared) const
             noexcept(nothrow_oneway_inequality_comparable_with_null<Compared, Null>)
         {
             return bool_cast(std::forward<Compared>(compared) != null_instance_v<Null>);

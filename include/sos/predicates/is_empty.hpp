@@ -22,7 +22,7 @@ namespace sos {
 
     struct is_empty_t final : transparent {
         template<empty_testable Tested>
-            [[nodiscard]] constexpr bool operator()(Tested&& tested) const
+        [[nodiscard]] constexpr bool operator()(Tested&& tested) const
             noexcept(nothrow_empty_testable<Tested>)
         {
             return std::ranges::empty(std::forward<Tested>(tested));
