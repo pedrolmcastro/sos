@@ -41,17 +41,56 @@ static constexpr void test_checkable() noexcept {
 }
 
 static constexpr void test_nothrow_checkable() noexcept {
-    static_assert(not sos::nothrow_checkable<sos::throws_t, empty_struct>);
-    static_assert(not sos::nothrow_checkable<sos::throws_t, explicit_testable>);
-    static_assert(not sos::nothrow_checkable<sos::throws_t, nothrow_implicit_testable>);
+    static_assert(not sos::nothrow_checkable<
+        sos::throws_t,
+        empty_struct
+    >);
 
-    static_assert(not sos::nothrow_checkable<sos::asserts_t, valued_container<>>);
-    static_assert(not sos::nothrow_checkable<sos::asserts_t, valued_container<>, sos::has_value_t>);
-    static_assert(    sos::nothrow_checkable<sos::asserts_t, nothrow_valued_container, sos::has_value_t>);
+    static_assert(not sos::nothrow_checkable<
+        sos::throws_t,
+        explicit_testable
+    >);
 
-    static_assert(    sos::nothrow_checkable<sos::unenforced_t, comparable_with<std::nullptr_t>>);
-    static_assert(    sos::nothrow_checkable<sos::unenforced_t, comparable_with<std::nullptr_t>, sos::is_null<std::nullptr_t>>);
-    static_assert(    sos::nothrow_checkable<sos::unenforced_t, nothrow_comparable_with<std::nullptr_t>, sos::is_null<std::nullptr_t>>);
+    static_assert(not sos::nothrow_checkable<
+        sos::throws_t,
+        nothrow_implicit_testable
+    >);
+
+
+    static_assert(not sos::nothrow_checkable<
+        sos::asserts_t,
+        valued_container<>
+    >);
+
+    static_assert(not sos::nothrow_checkable<
+        sos::asserts_t,
+        valued_container<>,
+        sos::has_value_t
+    >);
+
+    static_assert(    sos::nothrow_checkable<
+        sos::asserts_t,
+        nothrow_valued_container,
+        sos::has_value_t
+    >);
+
+
+    static_assert(    sos::nothrow_checkable<
+        sos::unenforced_t,
+        comparable_with_nullptr
+    >);
+
+    static_assert(    sos::nothrow_checkable<
+        sos::unenforced_t,
+        comparable_with_nullptr,
+        sos::is_null<std::nullptr_t>
+    >);
+
+    static_assert(    sos::nothrow_checkable<
+        sos::unenforced_t,
+        nothrow_comparable_with_nullptr,
+        sos::is_null<std::nullptr_t>
+    >);
 }
 
 

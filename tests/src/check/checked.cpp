@@ -17,20 +17,58 @@
 
 
 static constexpr void test_checked_constructible() noexcept {
-    static_assert(not std::constructible_from<sos::checked<emptiable_container<>>, sos::throws_t>);
-    static_assert(    std::constructible_from<sos::checked<emptiable_container<>>, sos::unenforced_t>);
-    static_assert(    std::constructible_from<sos::checked<emptiable_container<>, sos::is_empty_t>, sos::throws_t>);
-    static_assert(    std::constructible_from<sos::checked<emptiable_container<>, sos::is_empty_t>, sos::unenforced_t>);
+    static_assert(not std::constructible_from<
+        sos::checked<emptiable_container<>>,
+        sos::throws_t
+    >);
+
+    static_assert(    std::constructible_from<
+        sos::checked<emptiable_container<>>,
+        sos::unenforced_t
+    >);
+
+    static_assert(    std::constructible_from<
+        sos::checked<emptiable_container<>, sos::is_empty_t>,
+        sos::throws_t
+    >);
+
+    static_assert(    std::constructible_from<
+        sos::checked<emptiable_container<>, sos::is_empty_t>,
+        sos::unenforced_t
+    >);
 }
 
 static constexpr void test_checked_nothrow_constructible() noexcept {
-    static_assert(not std::is_nothrow_constructible_v<sos::checked<emptiable_container<>, sos::is_empty_t>, sos::throws_t>);
-    static_assert(not std::is_nothrow_constructible_v<sos::checked<emptiable_container<>, sos::is_empty_t>, sos::terminates_t>);
-    static_assert(    std::is_nothrow_constructible_v<sos::checked<emptiable_container<>, sos::is_empty_t>, sos::unenforced_t>);
+    static_assert(not std::is_nothrow_constructible_v<
+        sos::checked<emptiable_container<>, sos::is_empty_t>,
+        sos::throws_t
+    >);
 
-    static_assert(not std::is_nothrow_constructible_v<sos::checked<nothrow_emptiable_container, sos::is_empty_t>, sos::throws_t>);
-    static_assert(    std::is_nothrow_constructible_v<sos::checked<nothrow_emptiable_container, sos::is_empty_t>, sos::terminates_t>);
-    static_assert(    std::is_nothrow_constructible_v<sos::checked<nothrow_emptiable_container, sos::is_empty_t>, sos::unenforced_t>);
+    static_assert(not std::is_nothrow_constructible_v<
+        sos::checked<emptiable_container<>, sos::is_empty_t>,
+        sos::terminates_t
+    >);
+
+    static_assert(    std::is_nothrow_constructible_v<
+        sos::checked<emptiable_container<>, sos::is_empty_t>,
+        sos::unenforced_t
+    >);
+
+
+    static_assert(not std::is_nothrow_constructible_v<
+        sos::checked<nothrow_emptiable_container, sos::is_empty_t>,
+        sos::throws_t
+    >);
+
+    static_assert(    std::is_nothrow_constructible_v<
+        sos::checked<nothrow_emptiable_container, sos::is_empty_t>,
+        sos::terminates_t
+    >);
+
+    static_assert(    std::is_nothrow_constructible_v<
+        sos::checked<nothrow_emptiable_container, sos::is_empty_t>,
+        sos::unenforced_t
+    >);
 }
 
 
@@ -46,7 +84,12 @@ static void test_checked_reset() {
 }
 
 static constexpr void test_checked_unenforced() noexcept {
-    constexpr auto checked = sos::checked<std::optional<int>, sos::has_value_t>{sos::unenforced, std::optional<int>{}, sos::has_value};
+    constexpr auto checked = sos::checked<std::optional<int>, sos::has_value_t>{
+        sos::unenforced,
+        std::optional<int>{},
+        sos::has_value
+    };
+
     static_assert(checked.get() == std::nullopt);
 }
 
