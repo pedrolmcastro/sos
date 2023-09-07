@@ -17,7 +17,9 @@
 #include <sos/predicates/bool_cast.hpp>
 #include <sos/predicates/has_value.hpp>
 #include <sos/predicates/is_filled.hpp>
+#include <sos/predicates/always_true.hpp>
 #include <sos/predicates/is_not_null.hpp>
+#include <sos/predicates/always_false.hpp>
 
 #include <sos/traits/is_debug.hpp>
 #include <sos/traits/transparent.hpp>
