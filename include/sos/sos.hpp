@@ -9,8 +9,12 @@
 
 #include <sos/check/check.hpp>
 #include <sos/check/policy.hpp>
+#include <sos/check/checked.hpp>
 #include <sos/check/checkable.hpp>
+#include <sos/check/is_checked.hpp>
 #include <sos/check/failed_check.hpp>
+
+#include <sos/concepts/wrappable.hpp>
 
 #include <sos/predicates/is_null.hpp>
 #include <sos/predicates/is_empty.hpp>

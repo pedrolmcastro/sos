@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(
     sos
-    VERSION 0.4.0
+    VERSION 0.4.1
     DESCRIPTION "C++ header-only library to automate runtime checks using the type system"
     HOMEPAGE_URL "https://github.com/pedrolmcastro/sos"
     LANGUAGES CXX
