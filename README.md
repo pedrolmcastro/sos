@@ -57,6 +57,8 @@ The wrappers defined in this library also don't have any knowledge about ownersh
 
 ### Future
 
+Currently, this is a header-only library mainly because of the easy integration, but once C++20 [modules](https://en.cppreference.com/w/cpp/language/modules) become widely supported by compilers and build systems, it could be an alternative option with potentially faster compilation times.
+
 The C++23 standard adds the option to create [static operator()](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p1169r4.html). Once this feature is widely supported by compilers, it could be used by all predicates defined in this library to further optimize them.
 
 If the [contracts proposal](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2695r0.pdf) (hopefully) gets into the C++ standard, this library will become obsolete since contracts would be a standard and more general way of achieving the same goals, but until then, development continues.
