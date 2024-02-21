@@ -1,138 +1,70 @@
 #include <memory>
 #include <cassert>
-#include <cstddef>
-#include <optional>
+#include <functional>
 
-#include <sos/predicates/is_null.hpp>
-
-#include "empty_struct.hpp"
-#include "comparable_with.hpp"
+#include "sos/predicates/is_null.hpp"
 
 
-static constexpr void test_oneway_equality_comparable_with_nullptr() noexcept {
-    static_assert(
-            sos::oneway_equality_comparable_with_nullptr<void*>
-    );
-
-    static_assert(
-            sos::oneway_equality_comparable_with_nullptr<std::nullptr_t>
-    );
-
-    static_assert(
-            sos::oneway_equality_comparable_with_nullptr<std::unique_ptr<int>>
-    );
+using sos::predicates::is_null, sos::predicates::is_not_null;
 
 
-    static_assert(
-        not sos::oneway_equality_comparable_with_nullptr<empty_struct>
-    );
+static consteval void is_null_succeeds_with_null() noexcept {
+    static_assert(        is_null(nullptr));
+    static_assert(not is_not_null(nullptr));
 
-    static_assert(
-            sos::oneway_equality_comparable_with_nullptr<comparable_with_nullptr>
-    );
-
-    static_assert(
-            sos::oneway_equality_comparable_with_nullptr<nothrow_comparable_with_nullptr>
-    );
+    static_assert(        is_null(static_cast<void const *>(NULL)));
+    static_assert(not is_not_null(static_cast<void const *>(NULL)));
 }
 
-static constexpr void test_nothrow_oneway_equality_comparable_with_nullptr() noexcept {
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullptr<char*>
-    );
+static void is_null_succeeds_with_empty_smart_ptr() noexcept {
+    std::unique_ptr<int> unique{};
+    assert(        is_null(unique));
+    assert(not is_not_null(unique));
 
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullptr<std::nullptr_t>
-    );
-
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullptr<std::shared_ptr<int>>
-    );
-
-
-    static_assert(
-        not sos::nothrow_oneway_equality_comparable_with_nullptr<empty_struct>
-    );
-
-    static_assert(
-        not sos::nothrow_oneway_equality_comparable_with_nullptr<comparable_with_nullptr>
-    );
-
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullptr<nothrow_comparable_with_nullptr>
-    );
+    std::shared_ptr<int> shared{};
+    assert(        is_null(shared));
+    assert(not is_not_null(shared));
 }
 
-static void test_is_nullptr() {
-    // REVIEW: use static_assert if std::unique_ptr becomes constexpr
-    assert(    sos::is_nullptr(std::unique_ptr<int>{}));
-    assert(not sos::is_nullptr(std::make_unique<int>()));
+static consteval void is_null_succeeds_with_null_function_ptr() noexcept {
+    constexpr void (*function_ptr)(){};
 
-    static_assert(    sos::is_nullptr(nullptr));
-    static_assert(    sos::is_nullptr(static_cast<void*>(NULL)));
-
-    static_assert(    sos::is_nullptr(comparable_with_nullptr{true}));
-    static_assert(not sos::is_nullptr(comparable_with_nullptr{false}));
-    static_assert(    sos::is_nullptr(nothrow_comparable_with_nullptr{true}));
-    static_assert(not sos::is_nullptr(nothrow_comparable_with_nullptr{false}));
+    static_assert(       is_null(function_ptr));
+    static_assert(not is_not_null(function_ptr));
 }
 
 
-static constexpr void test_oneway_equality_comparable_with_nullopt() noexcept {
-    static_assert(
-            sos::oneway_equality_comparable_with_nullopt<std::optional<int>>
-    );
+static consteval void is_null_fails_with_populated_ptr() noexcept {
+    constexpr int pointee{};
 
-
-    static_assert(
-        not sos::oneway_equality_comparable_with_nullopt<empty_struct>
-    );
-
-    static_assert(
-            sos::oneway_equality_comparable_with_nullopt<comparable_with_nullopt>
-    );
-
-    static_assert(
-            sos::oneway_equality_comparable_with_nullopt<nothrow_comparable_with_nullopt>
-    );
+    static_assert(not is_null(&pointee));
+    static_assert(is_not_null(&pointee));
 }
 
-static constexpr void test_nothrow_oneway_equality_comparable_with_nullopt() noexcept {
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullopt<std::optional<double>>
-    );
+static void is_null_fails_with_populated_smart_ptr() noexcept {
+    auto const unique = std::make_unique<int>();
+    assert(not is_null(unique));
+    assert(is_not_null(unique));
 
-
-    static_assert(
-        not sos::nothrow_oneway_equality_comparable_with_nullopt<empty_struct>
-    );
-
-    static_assert(
-        not sos::nothrow_oneway_equality_comparable_with_nullopt<comparable_with_nullopt>
-    );
-
-    static_assert(
-            sos::nothrow_oneway_equality_comparable_with_nullopt<nothrow_comparable_with_nullopt>
-    );
+    auto const shared = std::make_shared<int>();
+    assert(not is_null(shared));
+    assert(is_not_null(shared));
 }
 
-static constexpr void test_is_nullopt() noexcept {
-    static_assert(    sos::is_nullopt(std::optional<int>{}));
-    static_assert(not sos::is_nullopt(std::make_optional<int>()));
+static consteval void is_null_fails_with_populated_function_ptr() noexcept {
+    void function();
 
-    static_assert(    sos::is_nullopt(comparable_with_nullopt{true}));
-    static_assert(not sos::is_nullopt(comparable_with_nullopt{false}));
-    static_assert(    sos::is_nullopt(nothrow_comparable_with_nullopt{true}));
-    static_assert(not sos::is_nullopt(nothrow_comparable_with_nullopt{false}));
+    static_assert(not is_null(&function));
+    static_assert(is_not_null(&function));
 }
 
 
 int main() {
-    test_oneway_equality_comparable_with_nullptr();
-    test_nothrow_oneway_equality_comparable_with_nullptr();
-    test_is_nullptr();
+    is_null_succeeds_with_null();
+    is_null_succeeds_with_empty_smart_ptr();
+    is_null_succeeds_with_null_function_ptr();
 
-    test_oneway_equality_comparable_with_nullopt();
-    test_nothrow_oneway_equality_comparable_with_nullopt();
-    test_is_nullopt();
+    is_null_fails_with_populated_ptr();
+    is_null_fails_with_populated_smart_ptr();
+    is_null_fails_with_populated_function_ptr();
 }

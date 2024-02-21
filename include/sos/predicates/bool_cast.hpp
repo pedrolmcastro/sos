@@ -3,32 +3,30 @@
 
 
 #include <utility>
+#include <type_traits>
 
-#include <sos/traits/transparent.hpp>
+#include "sos/predicates/negation.hpp"
 
-
-namespace sos {
-    template<class From>
-    concept bool_castable = requires(From&& from) {
-        static_cast<bool>(std::forward<From>(from));
-    };
-
-    template<class From>
-    concept nothrow_bool_castable = bool_castable<From> and requires(From&& from) {
-        { static_cast<bool>(std::forward<From>(from)) } noexcept;
-    };
+#include "sos/traits/make_transparent.hpp"
 
 
-    struct bool_cast_t final : transparent {
-        template<bool_castable From>
-        [[nodiscard]] constexpr bool operator()(From&& from) const
-            noexcept(nothrow_bool_castable<From>)
+namespace sos::predicates {
+    // Transparent function object performing a static cast to bool
+    struct bool_cast_t final : traits::make_transparent {
+        // Todo: Use static operator() in C++23
+        template<class From> [[nodiscard]] constexpr bool operator()(From&& from) const
+            noexcept(std::is_nothrow_constructible_v<bool, From&&>)
+            requires(std::is_constructible_v<bool, From&&>)
         {
             return static_cast<bool>(std::forward<From>(from));
         }
     };
 
     inline constexpr bool_cast_t bool_cast{};
+
+
+    using not_bool_cast_t = negation<bool_cast_t>;
+    inline constexpr not_bool_cast_t not_bool_cast{};
 }
 
 

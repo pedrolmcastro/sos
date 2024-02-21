@@ -4,61 +4,31 @@
 
 #include <cstddef>
 #include <utility>
-#include <optional>
 
-#include <sos/traits/transparent.hpp>
-#include <sos/predicates/bool_cast.hpp>
-#include <sos/traits/null_instance.hpp>
+#include "sos/concepts/equality_comparable_with.hpp"
 
+#include "sos/predicates/negation.hpp"
 
-namespace sos {
-    template<class Lhs, class Null>
-    concept oneway_equality_comparable_with_null = null<Null> and requires(Lhs&& lhs) {
-        { std::forward<Lhs>(lhs) == null_instance_v<Null> } -> bool_castable;
-    };
-
-    template<class Lhs, class Null>
-    concept nothrow_oneway_equality_comparable_with_null = (
-        oneway_equality_comparable_with_null<Lhs, Null> and
-        requires(Lhs&& lhs) {
-            { std::forward<Lhs>(lhs) == null_instance_v<Null> } noexcept -> nothrow_bool_castable;
-        }
-    );
+#include "sos/traits/make_transparent.hpp"
 
 
-    template<class Lhs>
-    concept oneway_equality_comparable_with_nullptr = (
-        oneway_equality_comparable_with_null<Lhs, std::nullptr_t>
-    );
-
-    template<class Lhs>
-    concept nothrow_oneway_equality_comparable_with_nullptr = (
-        nothrow_oneway_equality_comparable_with_null<Lhs, std::nullptr_t>
-    );
-
-
-    template<class Lhs>
-    concept oneway_equality_comparable_with_nullopt = (
-        oneway_equality_comparable_with_null<Lhs, std::nullopt_t>
-    );
-
-    template<class Lhs>
-    concept nothrow_oneway_equality_comparable_with_nullopt = (
-        nothrow_oneway_equality_comparable_with_null<Lhs, std::nullopt_t>
-    );
-
-
-    template<null Null> struct is_null final : transparent {
-        template<oneway_equality_comparable_with_null<Null> Compared>
-        [[nodiscard]] constexpr bool operator()(Compared&& compared) const
-            noexcept(nothrow_oneway_equality_comparable_with_null<Compared, Null>)
+namespace sos::predicates {
+    // Transparent function object performing equality comparison with nullptr
+    struct is_null_t final : traits::make_transparent {
+        // Todo: Use static operator() in C++23
+        template<detail::concepts::equality_comparable_with<std::nullptr_t> Compared>
+        [[nodiscard]] constexpr decltype(auto) operator()(Compared&& compared) const
+            noexcept(noexcept(std::forward<Compared>(compared) == nullptr))
         {
-            return bool_cast(std::forward<Compared>(compared) == null_instance_v<Null>);
+            return std::forward<Compared>(compared) == nullptr;
         }
     };
 
-    inline constexpr is_null<std::nullptr_t> is_nullptr{};
-    inline constexpr is_null<std::nullopt_t> is_nullopt{};
+    inline constexpr is_null_t is_null{};
+
+
+    using is_not_null_t = negation<is_null_t>;
+    inline constexpr is_not_null_t is_not_null{};
 }
 
 

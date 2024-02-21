@@ -19,11 +19,6 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     add_executable(${SOS_TEST} ${SOS_TEST_SOURCE})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
 
-    target_include_directories(
-        ${SOS_TEST} PRIVATE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    )
-
     # Enable warnings
     if(MSVC)
         target_compile_options(${SOS_TEST} PRIVATE /W4 /WX)

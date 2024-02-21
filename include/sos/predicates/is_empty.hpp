@@ -3,33 +3,17 @@
 
 
 #include <ranges>
-#include <utility>
+#include <type_traits>
 
-#include <sos/traits/transparent.hpp>
-
-
-namespace sos {
-    template<class Tested>
-    concept empty_testable = requires(Tested&& tested) {
-        std::ranges::empty(std::forward<Tested>(tested));
-    };
-
-    template<class Tested>
-    concept nothrow_empty_testable = empty_testable<Tested> and requires(Tested&& tested) {
-        { std::ranges::empty(std::forward<Tested>(tested)) } noexcept;
-    };
+#include "sos/predicates/negation.hpp"
 
 
-    struct is_empty_t final : transparent {
-        template<empty_testable Tested>
-        [[nodiscard]] constexpr bool operator()(Tested&& tested) const
-            noexcept(nothrow_empty_testable<Tested>)
-        {
-            return std::ranges::empty(std::forward<Tested>(tested));
-        }
-    };
-
+namespace sos::predicates {
+    using is_empty_t = std::remove_const_t<decltype(std::ranges::empty)>;
     inline constexpr is_empty_t is_empty{};
+
+    using is_not_empty_t = negation<is_empty_t>;
+    inline constexpr is_not_empty_t is_not_empty{};
 }
 
 

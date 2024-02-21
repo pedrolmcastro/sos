@@ -3,31 +3,34 @@
 
 
 #if __cplusplus < 202002L
-    #error "sos requires C++20 standard or later"
+    #error "sos requires the C++20 standard or later"
 #endif
 
 
-#include <sos/check/check.hpp>
-#include <sos/check/policy.hpp>
-#include <sos/check/checked.hpp>
-#include <sos/check/checkable.hpp>
-#include <sos/check/is_checked.hpp>
-#include <sos/check/failed_check.hpp>
+#include "sos/concepts/transparent.hpp"
+#include "sos/concepts/default_initializable_regular_invocable.hpp"
 
-#include <sos/concepts/wrappable.hpp>
+#include "sos/constraints/constrained.hpp"
 
-#include <sos/predicates/is_null.hpp>
-#include <sos/predicates/is_empty.hpp>
-#include <sos/predicates/bool_cast.hpp>
-#include <sos/predicates/has_value.hpp>
-#include <sos/predicates/is_filled.hpp>
-#include <sos/predicates/always_true.hpp>
-#include <sos/predicates/is_not_null.hpp>
-#include <sos/predicates/always_false.hpp>
+#include "sos/exceptions/bad_require.hpp"
 
-#include <sos/traits/is_debug.hpp>
-#include <sos/traits/transparent.hpp>
-#include <sos/traits/null_instance.hpp>
+#include "sos/policy/is.hpp"
+#include "sos/policy/policy.hpp"
+#include "sos/policy/policies.hpp"
+#include "sos/policy/static_policy.hpp"
+#include "sos/policy/dynamic_policy.hpp"
+
+#include "sos/predicates/always.hpp"
+#include "sos/predicates/is_null.hpp"
+#include "sos/predicates/is_empty.hpp"
+#include "sos/predicates/negation.hpp"
+#include "sos/predicates/bool_cast.hpp"
+
+#include "sos/require/require.hpp"
+#include "sos/require/is_requireable.hpp"
+
+#include "sos/traits/is_debug_mode.hpp"
+#include "sos/traits/make_transparent.hpp"
 
 
 #endif
