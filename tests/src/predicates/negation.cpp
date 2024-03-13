@@ -6,6 +6,8 @@
 #include "sos/concepts/transparent.hpp"
 
 
+using namespace std::string_literals;
+
 using sos::predicates::not_fn, sos::predicates::negation, sos::concepts::transparent;
 
 
@@ -41,9 +43,9 @@ static consteval void negation_is_not_transparent_if_wrapped_is_not_transparent(
 
 static consteval void negation_is_invocable_if_wrapped_is_predicate() noexcept {
     struct predicate_only_for_bool_t {
-        void operator()();                   // ✕ No return
-        bool operator()(bool);               // ✓ Valid predicate
-        std::string operator()(std::string); // ✕ Return is not boolean-testable
+        void operator()() {}                                // ✕ No return
+        bool operator()(bool) { return true; }              // ✓ Valid predicate
+        std::string operator()(std::string) { return ""s; } // ✕ Return is not boolean-testable
     };
 
     static_assert(not std::is_invocable_v<negation<predicate_only_for_bool_t>>);
@@ -54,8 +56,8 @@ static consteval void negation_is_invocable_if_wrapped_is_predicate() noexcept {
 
 static consteval void negation_is_nothrow_invocable_if_wrapped_is_nothrow_predicate() noexcept {
     struct nothrow_only_on_move_predicate_t {
-        bool operator()() const&;
-        bool operator()() const&& noexcept;
+        bool operator()() const& { return false; }
+        bool operator()() const&& noexcept { return true; }
     };
 
     static_assert(not std::is_nothrow_invocable_v<negation<nothrow_only_on_move_predicate_t>&>);
@@ -64,7 +66,7 @@ static consteval void negation_is_nothrow_invocable_if_wrapped_is_nothrow_predic
 
 static consteval void negation_is_move_only_invocable_if_wrapped_is_move_only_predicate() noexcept {
     struct move_only_predicate_t {
-        bool operator()() const&&;
+        bool operator()() const&& { return true; }
     };
 
     static_assert(not std::is_invocable_v<negation<move_only_predicate_t>&>);

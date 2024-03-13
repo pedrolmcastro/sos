@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 
 project(
     sos
@@ -26,7 +26,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 # Tests
 
-option(SOS_BUILD_TESTS "Build tests" OFF)
+option(SOS_BUILD_TESTS "Build SOS tests" OFF)
 
 if(SOS_BUILD_TESTS)
     add_subdirectory(tests)

@@ -26,8 +26,8 @@ namespace sos {
         }
 
         if constexpr (policy::dynamic_policy<Policy>) {
-            return std::visit([&predicate, &value](policy::static_policy auto policy) {
-                require(policy, predicate, value);
+            return std::visit([&predicate, &value](policy::static_policy auto visited) {
+                require(visited, predicate, value);
             }, policy);
         }
 

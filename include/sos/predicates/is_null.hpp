@@ -24,11 +24,11 @@ namespace sos::predicates {
         }
     };
 
-    inline constexpr is_null_t is_null{};
+    inline constexpr is_null_t is_null;
 
 
     using is_not_null_t = negation<is_null_t>;
-    inline constexpr is_not_null_t is_not_null{};
+    inline constexpr is_not_null_t is_not_null;
 }
 
 

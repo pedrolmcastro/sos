@@ -10,10 +10,10 @@
 
 namespace sos::predicates {
     using is_empty_t = std::remove_const_t<decltype(std::ranges::empty)>;
-    inline constexpr is_empty_t is_empty{};
+    inline constexpr is_empty_t is_empty;
 
     using is_not_empty_t = negation<is_empty_t>;
-    inline constexpr is_not_empty_t is_not_empty{};
+    inline constexpr is_not_empty_t is_not_empty;
 }
 
 

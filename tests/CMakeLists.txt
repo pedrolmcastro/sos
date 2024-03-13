@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.15)
 
 project(sos_tests CXX)
 message(STATUS "Generating sos tests")
 
 include(CTest)
+include(../cmake/warnings.cmake)
 
 
 if(NOT TARGET sos)
@@ -19,12 +20,7 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     add_executable(${SOS_TEST} ${SOS_TEST_SOURCE})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
 
-    # Enable warnings
-    if(MSVC)
-        target_compile_options(${SOS_TEST} PRIVATE /W4 /WX)
-    else()
-        target_compile_options(${SOS_TEST} PRIVATE -Werror -Wall -Wextra -pedantic)
-    endif()
+    sos_target_enable_warnings(${SOS_TEST})
 
     add_test(NAME ${SOS_TEST} COMMAND ${SOS_TEST})
 endforeach()

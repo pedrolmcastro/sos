@@ -22,9 +22,9 @@ using namespace std::string_view_literals;
 using sos::predicates::is_empty, sos::predicates::is_not_empty;
 
 
-static consteval void is_empty_succeeds_with_empty_string() noexcept {
-    static_assert(        is_empty(""s));
-    static_assert(not is_not_empty(""s));
+static void is_empty_succeeds_with_empty_string() noexcept {
+    assert(        is_empty(""s));
+    assert(not is_not_empty(""s));
 
     static_assert(        is_empty(""sv));
     static_assert(not is_not_empty(""sv));
@@ -94,9 +94,9 @@ static void is_empty_succeeds_with_empty_unordered_associative_container() noexc
 }
 
 
-static consteval void is_empty_fails_with_populated_string() noexcept {
-    static_assert(not is_empty("string"s));
-    static_assert(is_not_empty("string"s));
+static void is_empty_fails_with_populated_string() noexcept {
+    assert(not is_empty("string"s));
+    assert(is_not_empty("string"s));
 
     static_assert(not is_empty("string_view"sv));
     static_assert(is_not_empty("string_view"sv));
@@ -113,8 +113,8 @@ static consteval void is_empty_fails_with_positive_extent_array() noexcept {
 }
 
 static consteval void is_empty_fails_with_populated_initializer_list() noexcept {
-    static_assert(not is_empty(std::initializer_list{1}));
-    static_assert(is_not_empty(std::initializer_list{1}));
+    static_assert(not is_empty(std::initializer_list<int>{1}));
+    static_assert(is_not_empty(std::initializer_list<int>{1}));
 }
 
 static void is_empty_fails_with_populated_sequence_container() noexcept {

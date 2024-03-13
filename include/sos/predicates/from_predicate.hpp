@@ -7,7 +7,7 @@ namespace sos::predicates {
         explicit from_predicate_t() = default;
     };
 
-    inline constexpr from_predicate_t from_predicate{};
+    inline constexpr from_predicate_t from_predicate;
 }
 
 

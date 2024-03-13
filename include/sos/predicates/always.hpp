@@ -22,10 +22,10 @@ namespace sos::predicates {
 
 
     using always_true_t = always_t<true>;
-    inline constexpr always_true_t always_true{};
+    inline constexpr always_true_t always_true;
 
     using always_false_t = always_t<false>;
-    inline constexpr always_false_t always_false{};
+    inline constexpr always_false_t always_false;
 }
 
 

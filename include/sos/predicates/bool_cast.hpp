@@ -22,11 +22,11 @@ namespace sos::predicates {
         }
     };
 
-    inline constexpr bool_cast_t bool_cast{};
+    inline constexpr bool_cast_t bool_cast;
 
 
     using not_bool_cast_t = negation<bool_cast_t>;
-    inline constexpr not_bool_cast_t not_bool_cast{};
+    inline constexpr not_bool_cast_t not_bool_cast;
 }
 
 

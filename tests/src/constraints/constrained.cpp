@@ -11,7 +11,7 @@ using sos::exceptions::bad_require, sos::constraints::constrained, sos::policies
 
 static void constrained_construction_fails_if_predicate_fails() noexcept {
     try {
-        constrained<std::identity, bool>{throws_with_bad_require, false};
+        (void)constrained<std::identity, bool>{throws_with_bad_require, false};
     }
     catch (bad_require const&) {
         return;
