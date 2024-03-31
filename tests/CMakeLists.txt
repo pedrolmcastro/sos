@@ -5,6 +5,7 @@ message(STATUS "Generating sos tests")
 
 include(CTest)
 include(../cmake/warnings.cmake)
+include(../cmake/sanitizers.cmake)
 
 
 if(NOT TARGET sos)
@@ -21,6 +22,9 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
 
     sos_target_enable_warnings(${SOS_TEST})
+
+    # TODO: Enable leak and address sanitizers
+    sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_UNDEFINED)
 
     add_test(NAME ${SOS_TEST} COMMAND ${SOS_TEST})
 endforeach()

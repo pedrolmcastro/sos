@@ -52,10 +52,10 @@ static void is_null_fails_with_populated_smart_ptr() noexcept {
 }
 
 static consteval void is_null_fails_with_populated_function_ptr() noexcept {
-    void function();
+    constexpr auto lambda = []{};
 
-    static_assert(not is_null(&function));
-    static_assert(is_not_null(&function));
+    static_assert(not is_null(+lambda));
+    static_assert(is_not_null(+lambda));
 }
 
 

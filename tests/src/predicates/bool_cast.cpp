@@ -48,10 +48,10 @@ static consteval void bool_cast_succeeds_with_populated_optional() noexcept {
 }
 
 static consteval void bool_cast_succeeds_with_populated_function_ptr() noexcept {
-    void function();
+    constexpr auto lambda = []{};
 
-    static_assert(        bool_cast(&function));
-    static_assert(not not_bool_cast(&function));
+    static_assert(        bool_cast(+lambda));
+    static_assert(not not_bool_cast(+lambda));
 }
 
 
