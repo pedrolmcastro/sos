@@ -2,7 +2,7 @@
 
 
 function(sos_enable_sanitizers)
-    set(OPTIONS SANITIZE_LEAK SANITIZE_MEMORY SANITIZE_THREAD SANITIZE_ADDRESS SANITIZE_UNDEFINED)
+    set(OPTIONS SANITIZE_LEAK SANITIZE_STACK SANITIZE_MEMORY SANITIZE_THREAD SANITIZE_ADDRESS SANITIZE_UNDEFINED)
     cmake_parse_arguments(SOS "${OPTIONS}" "TARGET" "" ${ARGN})
 
     if(NOT SOS_TARGET)
@@ -11,6 +11,7 @@ function(sos_enable_sanitizers)
 
     if(
         NOT SOS_SANITIZE_LEAK
+        AND NOT SOS_SANITIZE_STACK
         AND NOT SOS_SANITIZE_MEMORY
         AND NOT SOS_SANITIZE_THREAD
         AND NOT SOS_SANITIZE_ADDRESS
@@ -24,9 +25,16 @@ function(sos_enable_sanitizers)
     endif()
 
 
+    set(COMPILER_OPTIONS "")
+    set(LINKER_OPTIONS "")
+
     if(MSVC)
         if(SOS_SANITIZE_LEAK)
             message(AUTHOR_WARNING "Leak sanitizer isn't supported on MSVC")
+        endif()
+
+        if(SOS_SANITIZE_STACK)
+            message(AUTHOR_WARNING "Safe stack sanitizer isn't supported on MSVC")
         endif()
 
         if(SOS_SANITIZE_MEMORY)
@@ -38,15 +46,15 @@ function(sos_enable_sanitizers)
         endif()
 
         if(SOS_SANITIZE_ADDRESS)
-            target_compile_options(${SOS_TARGET} PRIVATE /fsanitize=address /Zi /INCREMENTAL:NO)
-            target_link_options(${SOS_TARGET} PRIVATE /INCREMENTAL:NO)
+            list(APPEND COMPILER_OPTIONS /fsanitize=address /Zi /INCREMENTAL:NO)
+            list(APPEND LINKER_OPTIONS /INCREMENTAL:NO)
         endif()
 
         if(SOS_SANITIZE_UNDEFINED)
             message(AUTHOR_WARNING "Undefined behavior sanitizer isn't supported on MSVC")
         endif()
 
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|.*Clang|IntelLLVM")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|IntelLLVM")
         set(SANITIZERS "")
 
         if(SOS_SANITIZE_LEAK)
@@ -54,6 +62,16 @@ function(sos_enable_sanitizers)
                 message(AUTHOR_WARNING "Leak sanitizer isn't supported on Windows")
             else()
                 list(APPEND SANITIZERS "leak")
+            endif()
+        endif()
+
+        if(SOS_SANITIZE_STACK)
+            if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+                message(AUTHOR_WARNING "Safe stack sanitizer isn't supported on GCC")
+            elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
+                message(AUTHOR_WARNING "Safe stack sanitizer isn't supported on ICC")
+            else()
+                list(APPEND SANITIZERS "safe-stack")
             endif()
         endif()
 
@@ -98,11 +116,17 @@ function(sos_enable_sanitizers)
         list(JOIN SANITIZERS "," SANITIZERS)
 
         if(SANITIZERS)
-            target_compile_options(${SOS_TARGET} PRIVATE -fsanitize=${SANITIZERS})
-            target_link_options(${SOS_TARGET} PRIVATE -fsanitize=${SANITIZERS})
+            list(APPEND COMPILER_OPTIONS -fsanitize=${SANITIZERS})
+            list(APPEND LINKER_OPTIONS -fsanitize=${SANITIZERS})
         endif()
 
     else()
         message(AUTHOR_WARNING "Compiler not supported: ${CMAKE_CXX_COMPILER_ID}")
+
+    endif()
+
+    if(COMPILER_OPTIONS AND LINKER_OPTIONS)
+        target_compile_options(${SOS_TARGET} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${COMPILER_OPTIONS}>)
+        target_link_options(${SOS_TARGET} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${LINKER_OPTIONS}>)
     endif()
 endfunction()

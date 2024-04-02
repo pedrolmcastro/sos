@@ -24,7 +24,11 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     sos_enable_warnings(TARGET ${SOS_TEST} AS_ERRORS)
 
     # TODO: Enable leak and address sanitizers
-    sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_UNDEFINED)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_UNDEFINED)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_STACK SANITIZE_UNDEFINED)
+    endif()
 
     add_test(NAME ${SOS_TEST} COMMAND ${SOS_TEST})
 endforeach()
