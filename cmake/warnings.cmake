@@ -17,7 +17,7 @@ function(sos_enable_warnings)
     set(WARNINGS "")
 
     if(MSVC)
-        if("${CMAKE_CXX_FLAGS}" MATCHES ".*/W3.*")
+        if("${CMAKE_CXX_FLAGS}" MATCHES "/W3")
             message(STATUS "Removing /W3 compiler option added by default by CMake: CMP0092")
             string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
         endif()
@@ -200,7 +200,7 @@ function(sos_enable_warnings)
             )
         endif()
 
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         list(APPEND WARNINGS -Wall -Wextra -pedantic -Wno-unknown-warning-option)
 
         if(SOS_AS_ERRORS)
