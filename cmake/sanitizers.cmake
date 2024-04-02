@@ -46,11 +46,7 @@ function(sos_enable_sanitizers)
             message(AUTHOR_WARNING "Undefined behavior sanitizer isn't supported on MSVC")
         endif()
 
-    elseif(
-        CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
-        CMAKE_CXX_COMPILER_ID MATCHES ".*Clang" OR
-        CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM"
-    )
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|.*Clang|IntelLLVM")
         set(SANITIZERS "")
 
         if(SOS_SANITIZE_LEAK)
