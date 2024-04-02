@@ -21,7 +21,7 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     add_executable(${SOS_TEST} ${SOS_TEST_SOURCE})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
 
-    sos_target_enable_warnings(${SOS_TEST})
+    sos_enable_warnings(TARGET ${SOS_TEST} AS_ERRORS)
 
     # TODO: Enable leak and address sanitizers
     sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_UNDEFINED)
