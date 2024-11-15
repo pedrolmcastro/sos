@@ -1,16 +1,15 @@
-# Based on https://github.com/cpp-best-practices/cmake_template/blob/main/cmake/CompilerWarnings.cmake
-# Based on https://github.com/joseasoler/cmake_cpp_warnings/blob/master/cmake/cpp_warnings.cmake
+# From https://github.com/pedrolmcastro/cppmake
 
 
-function(sos_enable_warnings)
-    cmake_parse_arguments(SOS "AS_ERRORS" "TARGET" "" ${ARGN})
+function(cppmake_enable_warnings)
+    cmake_parse_arguments(CPPMAKE "AS_ERRORS" "TARGET" "" ${ARGN})
 
-    if(NOT SOS_TARGET)
+    if(NOT CPPMAKE_TARGET)
         message(FATAL_ERROR "Missing target")
     endif()
 
-    if(SOS_UNPARSED_ARGUMENTS)
-        message(FATAL_ERROR "Invalid arguments: ${SOS_UNPARSED_ARGUMENTS}")
+    if(CPPMAKE_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR "Invalid arguments: ${CPPMAKE_UNPARSED_ARGUMENTS}")
     endif()
 
 
@@ -24,7 +23,7 @@ function(sos_enable_warnings)
 
         list(APPEND WARNINGS /W4 /permissive-)
 
-        if(SOS_AS_ERRORS)
+        if(CPPMAKE_AS_ERRORS)
             list(APPEND WARNINGS /WX)
         endif()
 
@@ -131,7 +130,7 @@ function(sos_enable_warnings)
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         list(APPEND WARNINGS -Wall -Wextra -pedantic)
 
-        if(SOS_AS_ERRORS)
+        if(CPPMAKE_AS_ERRORS)
             list(APPEND WARNINGS -Werror)
         endif()
 
@@ -203,7 +202,7 @@ function(sos_enable_warnings)
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         list(APPEND WARNINGS -Wall -Wextra -pedantic -Wno-unknown-warning-option)
 
-        if(SOS_AS_ERRORS)
+        if(CPPMAKE_AS_ERRORS)
             list(APPEND WARNINGS -Werror)
         endif()
 
@@ -231,6 +230,6 @@ function(sos_enable_warnings)
     endif()
 
     if(WARNINGS)
-        target_compile_options(${SOS_TARGET} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${WARNINGS}>)
+        target_compile_options(${CPPMAKE_TARGET} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${WARNINGS}>)
     endif()
 endfunction()

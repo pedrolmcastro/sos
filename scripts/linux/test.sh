@@ -1,4 +1,4 @@
 #! /bin/bash
 
 ROOT=$(dirname $0)/../..
-ctest --test-dir ${ROOT}/build
+ctest --test-dir ${ROOT}/build --output-on-failure

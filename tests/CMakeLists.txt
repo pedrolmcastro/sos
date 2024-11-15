@@ -4,8 +4,8 @@ project(sos_tests CXX)
 message(STATUS "Generating sos tests")
 
 include(CTest)
+include(../cmake/sanitize.cmake)
 include(../cmake/warnings.cmake)
-include(../cmake/sanitizers.cmake)
 
 
 if(NOT TARGET sos)
@@ -21,13 +21,13 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
     add_executable(${SOS_TEST} ${SOS_TEST_SOURCE})
     target_link_libraries(${SOS_TEST} PRIVATE sos::sos)
 
-    sos_enable_warnings(TARGET ${SOS_TEST} AS_ERRORS)
+    cppmake_enable_warnings(TARGET ${SOS_TEST} AS_ERRORS)
 
     # TODO: Enable leak and address sanitizers
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_UNDEFINED)
+        cppmake_sanitize(TARGET ${SOS_TEST} ADDRESS UNDEFINED)
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        sos_enable_sanitizers(TARGET ${SOS_TEST} SANITIZE_STACK SANITIZE_UNDEFINED)
+        cppmake_sanitize(TARGET ${SOS_TEST} ADDRESS LEAK SAFE_STACK UNDEFINED)
     endif()
 
     add_test(NAME ${SOS_TEST} COMMAND ${SOS_TEST})
