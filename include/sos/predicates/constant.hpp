@@ -1,10 +1,13 @@
 #ifndef SOS_PREDICATES_CONSTANT_HPP
 #define SOS_PREDICATES_CONSTANT_HPP
 
+#include "sos/concepts/transparent.hpp"
+
 #include <type_traits>
 
 namespace sos::predicates {
-    template<bool Value> struct [[nodiscard]] constant final {
+    template<bool Value>
+    struct [[nodiscard]] constant final : concepts::enable_transparent {
         using type = std::bool_constant<Value>;
         using value_type = bool;
 
