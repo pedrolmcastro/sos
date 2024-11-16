@@ -25,7 +25,7 @@ foreach(SOS_TEST_SOURCE ${SOS_TEST_SOURCES})
 
     # TODO: Enable leak and address sanitizers
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        cppmake_sanitize(TARGET ${SOS_TEST} ADDRESS UNDEFINED)
+        cppmake_sanitize(TARGET ${SOS_TEST} ADDRESS LEAK UNDEFINED)
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         cppmake_sanitize(TARGET ${SOS_TEST} ADDRESS LEAK SAFE_STACK UNDEFINED)
     endif()
