@@ -16,8 +16,8 @@ AlignEscapedNewlines: LeftWithLastLine
 AlignOperands: Align
 AlignTrailingComments:
   Kind: Never
-AllowAllArgumentsOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Empty
 AllowShortCaseLabelsOnASingleLine: false
@@ -29,6 +29,7 @@ AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
 BinPackArguments: false
+BinPackLongBracedList: false
 BinPackParameters: false
 BitFieldColonSpacing: Both
 BraceWrapping:
@@ -57,11 +58,12 @@ BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Custom
 BreakBeforeConceptDeclarations: Allowed
 BreakBeforeInlineASMColon: OnlyMultiline
+BreakBeforeTemplateCloser: true
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: AfterColon
 BreakFunctionDefinitionParameters: false
 BreakInheritanceList: AfterColon
-BreakStringLiterals: true
+BreakStringLiterals: false
 BreakTemplateDeclarations: MultiLine
 ColumnLimit: 80
 CompactNamespaces: false
@@ -105,15 +107,19 @@ MainIncludeChar: Quote
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
 PPIndentWidth: 4
-PackConstructorInitializers: NextLine
+PackConstructorInitializers: CurrentLine
+PenaltyBreakScopeResolution: 1000000
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 1000000
 PointerAlignment: Left
 QualifierAlignment: Right
+QualifierOrder: [friend, inline, static, constexpr, type, const, volatile]
 ReferenceAlignment: Pointer
-ReflowComments: true
+ReflowComments: false
 RemoveBracesLLVM: false
 RemoveParentheses: Leave
 RemoveSemicolon: false
-RequiresClausePosition: WithPreceding
+RequiresClausePosition: OwnLine
 RequiresExpressionIndentation: OuterScope
 SeparateDefinitionBlocks: Always
 SortIncludes: CaseInsensitive
