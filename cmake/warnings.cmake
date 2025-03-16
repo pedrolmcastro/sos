@@ -1,6 +1,5 @@
 # From https://github.com/pedrolmcastro/cppmake
 
-
 function(cppmake_enable_warnings)
     cmake_parse_arguments(CPPMAKE "AS_ERRORS" "TARGET" "" ${ARGN})
 
@@ -12,224 +11,237 @@ function(cppmake_enable_warnings)
         message(FATAL_ERROR "Invalid arguments: ${CPPMAKE_UNPARSED_ARGUMENTS}")
     endif()
 
-
+    set(OPTIONS "")
     set(WARNINGS "")
 
     if(MSVC)
         if("${CMAKE_CXX_FLAGS}" MATCHES "/W3")
-            message(STATUS "Removing /W3 compiler option added by default by CMake: CMP0092")
+            message(
+                STATUS
+                "Removing /W3 compiler option added by CMake: CMP0092"
+            )
             string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-        endif()
-
-        list(APPEND WARNINGS /W4 /permissive-)
-
-        if(CPPMAKE_AS_ERRORS)
-            list(APPEND WARNINGS /WX)
         endif()
 
         if(MSVC_VERSION VERSION_GREATER_EQUAL 1700) # 2012 - 11.
             list(APPEND WARNINGS
-                /w44431 # Missing type specifier
-                /w24302 # Truncating conversions
-                /w44311 # Truncating pointer conversions
+                4302
+                4311
+                4431
             )
         endif()
 
         if(MSVC_VERSION VERSION_GREATER_EQUAL 1900) # 2015 - 14.
             list(APPEND WARNINGS
-                /w44062 # Missing enumerator on switch
-                /w14165 # Conversion from HRESULT to bool
-                /w44242 # Conversion with type mismatch
-                /w44254 # Larger bitfield assigned to a smaller one
-                /w44263 # Member function overload is not an override
-                /w34265 # Missing virtual destructor
-                /w34287 # Unsigned variable operated with negative number
-                /w44289 # Variable declared in a for-loop used outside the scope
-                /w44296 # Unsigned compared with zero
-                /w14355 # Use of this in member initializer list
-                /w44365 # Conversion with sign mismatch
-                /w44435 # Object layout with virtual base changes is inconsistent
-                /w44437 # A dynamic_cast from virtual base can fail
-                /w44536 # Type name exceeds the meta-data limit of characters
-                /w14545 # Missing arguments to function expression before comma
-                /w14546 # Missing arguments to function before comma
-                /w14547 # Operator before comma without side-effect
-                /w14548 # Expression before comma without side-effect
-                /w14549 # Operator before comma without side-effect
-                /w14555 # Expression without side-effect
-                /w34557 # Use of __assume with side-effect
-                /w44574 # Use of #ifndef istead of #if
-                /w14577 # Use of noexcept with no exception handling mode specified
-                /w14598 # Precompiled header number mismatch
-                /w34599 # Precompiled header command line arguments number mismatch
-                /w14605 # Precompiled header defined macro mismatch
-                /w34619 # Invalid #pragma warning number
-                /w34640 # Local static object is not thread-safe
-                /w44643 # Prohibited forward declaring of identifier in namespace std
-                /w44654 # Ignored code before include of precompiled header
-                /w44774 # Format string is not a string literal
-                /w44777 # Format string checking
-                /w14822 # Missing local class member function body
-                /w24826 # Sign-extended conversion
-                /w44841 # Compound member designator used in offsetof
-                /w44866 # Compiler may not enforce left-to-right evaluation order for call to operator
-                /w44868 # Compiler may not enforce left-to-right evaluation order in braced initialization list
-                /w14905 # Wide string literal cast to LPSTR
-                /w14906 # String literal cast to LPWSTR
-                /w14928 # Multiple user-defined conversions implicitly applied
-                /w14946 # Use of reinterpret_cast between related classes
-                /w44987 # Use of throw (...) specifier
-                /w15022 # Multiple move constructors
-                /w15023 # Multiple move assignment operators
-                /w45024 # Move constructor implicitly defined as deleted
-                /w45025 # Move assigment implicitly defined as deleted
-                /w15026 # Move constructor implicitly defined as deleted
-                /w15027 # Move assigment implicitly defined as deleted
-                /w45029 # Alignment attribute applyed to something other than variables, data members or tag types
-                /w45031 # Popping state from other file with #pragma warning(pop)
-                /w45032 # Missing #pragma warning(pop)
+                4062
+                4165
+                4242
+                4254
+                4263
+                4265
+                4287
+                4289
+                4296
+                4355
+                4365
+                4435
+                4437
+                4536
+                4545
+                4546
+                4547
+                4548
+                4549
+                4555
+                4557
+                4574
+                4577
+                4598
+                4599
+                4605
+                4619
+                4640
+                4643
+                4654
+                4774
+                4777
+                4822
+                4826
+                4841
+                4866
+                4868
+                4905
+                4906
+                4928
+                4946
+                4987
+                5022
+                5023
+                5024
+                5025
+                5026
+                5027
+                5029
+                5031
+                5032
             )
         endif()
 
         if(MSVC_VERSION VERSION_GREATER_EQUAL 1910) # 2017 - 15.
             list(APPEND WARNINGS
-                /w45038 # Member initializer list order different from declaration
-                /w45039 # Throwing function passed to extern C
-                /w45041 # Out-of-line constexpr static data member
-                /w45042 # Inline function declaration at block scope
+                5038
+                5039
+                5041
+                5042
             )
         endif()
 
         if(MSVC_VERSION VERSION_GREATER_EQUAL 1920) # 2019 - 16.
             list(APPEND WARNINGS
-                /w35052 # Keyword used in a C++ version prior to when it was introduced
-                /w45214 # Invalid keyword to an operand with a volatile type
-                /w45215 # Volatile parameter
-                /w45216 # Volatile return
-                /w45217 # Volatile structured binding
-                /w25219 # Conversion with type mismatch
-                /w45220 # Non-static volatile data member doesn't imply non trivial compiler generated members
-                /w45240 # Invalid attribute position
+                5052
+                5214
+                5215
+                5216
+                5217
+                5219
+                5220
+                5240
             )
         endif()
 
         if(MSVC_VERSION VERSION_GREATER_EQUAL 1930) # 2022 - 17.
             list(APPEND WARNINGS
-                /w15249 # Non representable enumerator value
-                /w45254 # Invalid terse static_assert
-                /w45258 # Unnecessary explicit capture
-                /w45259 # Missing template<> in explicit specialization
-                /w15262 # Implicit fall-through
-                /w45263 # Prevented copy elision by calling std::move
-                /w45264 # Unused const variable
-                /w45266 # Const return
-                /w45267 # Deprecated implicit copy constructor/assignment given any user-provided
+                5249
+                5254
+                5258
+                5259
+                5262
+                5263
+                5264
+                5266
+                5267
             )
         endif()
 
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        list(APPEND WARNINGS -Wall -Wextra -pedantic)
+        list(APPEND OPTIONS /permissive- /W4)
 
         if(CPPMAKE_AS_ERRORS)
-            list(APPEND WARNINGS -Werror)
+            set(LEVEL e)
+        else()
+            set(LEVEL 1)
         endif()
 
+        list(TRANSFORM WARNINGS PREPEND /w${LEVEL})
+        list(APPEND OPTIONS ${WARNINGS})
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         list(APPEND WARNINGS
-            -Weffc++                # Scott Meyers’ Effective C++
-            -Wshadow                # Name shadowing
-            -Wformat=2              # Format string checking
-            -Wcast-qual             # Removed qualifier in pointer cast
-            -Wcast-align            # Pointer cast with increased target alignment
-            -Wconversion            # Implicit conversion
-            -Wlogical-op            # Suspicious logical operations
-            -Wsign-promo            # Conversion from unsigned to signed
-            -Wswitch-enum           # Missing enumerator on switch
-            -Wold-style-cast        # Use of C-style cast
-            -Wredundant-decls       # Redundant declarations
-            -Wsign-conversion       # Conversion with sign mismatch
-            -Wnon-virtual-dtor      # Missing virtual destructor
-            -Woverloaded-virtual    # Member function overload is not an override
-            -Wdisabled-optimization # Failed to optimize
+            cast-align
+            cast-qual
+            conversion
+            disabled-optimization
+            effc++
+            format=2
+            logical-op
+            non-virtual-dtor
+            old-style-cast
+            overloaded-virtual
+            redundant-decls
+            shadow
+            sign-conversion
+            sign-promo
+            switch-enum
         )
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 4.6)
-            list(APPEND WARNINGS -Wdouble-promotion) # Implicit floating-point promotion
+            list(APPEND WARNINGS double-promotion)
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 4.8)
-            list(APPEND WARNINGS -Wuseless-cast) # Useless cast
+            list(APPEND WARNINGS useless-cast)
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 5)
             list(APPEND WARNINGS
-                -Wdate-time             # Use of __TIME__, __DATE__ or __TIMESTAMP__
-                -Wsuggest-override      # Suggest override on virtual member function
-                -Wsuggest-final-types   # Suggest final on types
-                -Wsuggest-final-methods # Suggest final on virtual member function
+                date-time
+                suggest-final-methods
+                suggest-final-types
+                suggest-override
             )
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 6)
             list(APPEND WARNINGS
-                -Wduplicated-cond        # Duplicated condition in if-else-if chain
-                -Wnull-dereference       # Dereferencing a null pointer
-                -Wmultiple-inheritance   # Use of multiple inheritance
-                -Wmisleading-indentation # Indentation doesn't match block structure
+                duplicated-cond
+                misleading-indentation
+                multiple-inheritance
+                null-dereference
             )
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7)
             list(APPEND WARNINGS
-                -Walloca              # Use of alloca
-                -Wduplicated-branches # Duplicated branch in if-else chain
+                alloca
+                duplicated-branches
             )
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 8)
             list(APPEND WARNINGS
-                -Wextra-semi                # Redundant semicolons
-                -Wunsafe-loop-optimizations # Failed to optimize loop
+                extra-semi
+                unsafe-loop-optimizations
             )
         endif()
 
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 10)
             list(APPEND WARNINGS
-                -Warith-conversion # Implicit conversion in arithmetic operations
-                -Wredundant-tags   # Redundant class-key or enum-key
+                arith-conversion
+                redundant-tags
             )
         endif()
 
-    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        list(APPEND WARNINGS -Wall -Wextra -pedantic -Wno-unknown-warning-option)
+        list(APPEND OPTIONS -pedantic -Wall -Wextra)
 
         if(CPPMAKE_AS_ERRORS)
-            list(APPEND WARNINGS -Werror)
+            list(APPEND OPTIONS -Werror)
         endif()
 
+        list(TRANSFORM WARNINGS PREPEND -W)
+        list(APPEND OPTIONS ${WARNINGS})
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         list(APPEND WARNINGS
-            -Wshadow               # Name shadowing
-            -Wunused               # Unused constructs
-            -Wformat=2             # Format string checking
-            -Wcast-qual            # Removed qualifier in pointer cast
-            -Wcast-align           # Pointer cast with increased target alignment
-            -Wconversion           # Implicit conversion
-            -Wswitch-enum          # Missing enumerator on switch
-            -Wold-style-cast       # Use of C-style cast
-            -Wsign-conversion      # Conversion with sign mismatch
-            -Wdouble-promotion     # Implicit floating-point promotion
-            -Wnon-virtual-dtor     # Missing virtual destructor
-            -Wnull-dereference     # Dereferencing a null pointer
-            -Woverloaded-virtual   # Member function overload is not an override
-            -Wimplicit-fallthrough # Implicit fall-through
+            cast-align
+            cast-qual
+            conversion
+            double-promotion
+            format=2
+            implicit-fallthrough
+            non-virtual-dtor
+            null-dereference
+            old-style-cast
+            overloaded-virtual
+            shadow
+            sign-conversion
+            switch-enum
+            unused
         )
 
-    else()
-        # TODO: Support Intel compiler
-        message(AUTHOR_WARNING "Compiler not supported: ${CMAKE_CXX_COMPILER_ID}")
+        list(APPEND OPTIONS -pedantic -Wall -Wextra -Wno-unknown-warning-option)
 
+        if(CPPMAKE_AS_ERRORS)
+            list(APPEND OPTIONS -Werror)
+        endif()
+
+        list(TRANSFORM WARNINGS PREPEND -W)
+        list(APPEND OPTIONS ${WARNINGS})
+    else()
+        message(AUTHOR_WARNING "Unsupported compiler: ${CMAKE_CXX_COMPILER_ID}")
     endif()
 
-    if(WARNINGS)
-        target_compile_options(${CPPMAKE_TARGET} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${WARNINGS}>)
+    if(OPTIONS)
+        target_compile_options(
+            ${CPPMAKE_TARGET}
+            PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:${OPTIONS}>
+        )
     endif()
 endfunction()
